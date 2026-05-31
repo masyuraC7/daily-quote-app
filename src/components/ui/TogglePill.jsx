@@ -1,6 +1,6 @@
 export function TogglePill({ value, options, onChange }) {
   return (
-    <div className="toggle-pill" aria-label="Download format">
+    <div className="toggle-pill" role="group" aria-label="Download format">
       {options.map((option) => (
         <button
           aria-pressed={value === option.value}
