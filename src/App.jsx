@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { HistoryActions } from './components/features/history/HistoryActions';
 import { HistoryList } from './components/features/history/HistoryList';
 import { QuoteActions } from './components/features/quote/QuoteActions';
@@ -49,6 +50,7 @@ function App() {
         />
         <HistoryList history={history} onDelete={deleteQuote} />
       </div>
+      <Analytics />
     </MainLayout>
   );
 }
