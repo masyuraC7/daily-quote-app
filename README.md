@@ -3,7 +3,7 @@
 A modern and minimal quote generator application built with React.
 Generate random quotes, save your favorite quote history, and export your collection with a clean developer-inspired interface.
 
-![Daily Quote App Preview](./docs/preview.png)
+![Daily Quote App Preview](./docs/preview.webp)
 
 ## Overview
 
