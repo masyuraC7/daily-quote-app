@@ -42,7 +42,7 @@ A single-page quote generator with history, export, and theme switching. Fetch r
 Prerequisites: Node 20 or later (required by Vite 8).
 
 ```bash
-git clone https://github.com/masyuraC7/daily-quote-app.git
+git clone https://github.com/pyforgedev/daily-quote-app.git
 cd daily-quote-app
 npm install
 ```
