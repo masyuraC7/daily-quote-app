@@ -26,7 +26,7 @@ Vite + React 19 app in plain JavaScript (no TypeScript). Single package, no mono
 
 - **No Tailwind.** Do not add Tailwind utility classes or reintroduce the Tailwind pipeline; styling lives entirely in custom BEM-style classes (e.g. `history-item__time`, `toggle-pill__item`) in `src/assets/css/global.css`
 - Colors, fonts, and sizes are CSS custom properties (`--color-primary`, etc.) defined in `global.css`, themable via `:root[data-theme="light"]`
-- `docs/DESIGN.md` documents the design tokens/typography (in Indonesian) — keep it in sync with `global.css`
+- `DESIGN.md` (repo root) documents the design tokens/typography (in Indonesian) — keep it in sync with `global.css`
 - Theme is applied via `data-theme` on `<html>`; stored in localStorage key `daily-quote-theme`, default `dark`
 
 ## Gotchas
