@@ -31,7 +31,11 @@ function App() {
   };
 
   return (
-    <MainLayout>
+    <>
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
+      <MainLayout>
       <div className="hero-stack">
         <div className="page-heading">
           <p className="eyebrow">Daily Quote Runtime</p>
@@ -54,6 +58,7 @@ function App() {
       <Analytics />
       <SpeedInsights />
     </MainLayout>
+    </>
   );
 }
 

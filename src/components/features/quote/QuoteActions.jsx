@@ -4,8 +4,13 @@ import { Button } from '../../ui/Button';
 export function QuoteActions({ isLoading, onGenerate }) {
   return (
     <div className="quote-actions">
-      <Button icon={RefreshCw} onClick={onGenerate} disabled={isLoading}>
-        {isLoading ? 'Generating...' : 'Generate New Quote'}
+      <Button
+        className={isLoading ? 'btn-icon-spin' : ''}
+        disabled={isLoading}
+        icon={RefreshCw}
+        onClick={onGenerate}
+      >
+        {isLoading ? 'Generating…' : 'Generate New Quote'}
       </Button>
     </div>
   );

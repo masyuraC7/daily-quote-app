@@ -1,3 +1,7 @@
-export function Card({ children, className = '' }) {
-  return <section className={`card ${className}`}>{children}</section>;
+export function Card({ children, className = '', ...props }) {
+  return (
+    <section className={`card ${className}`} {...props}>
+      {children}
+    </section>
+  );
 }

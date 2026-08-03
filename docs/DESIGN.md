@@ -1,6 +1,6 @@
 # Daily Quote App Design System
 
-> Version: 1.0.0\
+> Version: 2.0.0\
 > Status: Production Design Reference
 
 Daily Quote App adalah aplikasi open-source untuk mengambil random
@@ -18,14 +18,17 @@ Daily Quote App menggunakan pendekatan:
 
 -   Developer focused interface
 -   Documentation inspired UI
--   Minimal distraction reading experience
+-   Editorial reading experience (serif display + mono metadata)
+-   Minimal distraction
 -   Component driven architecture
 
 Identitas utama:
 
 -   Electric green sebagai warna aksi utama
--   Clean card based layout
--   Inter + SF Mono typography
+-   Cool-tinted neutral surfaces (hijau kehitaman, bukan abu netral)
+-   Fraunces (serif) untuk kutipan & headline
+-   Space Grotesk untuk UI, JetBrains Mono untuk metadata
+-   Ambient glow + film grain pada latar
 -   Light & Dark theme support
 
 ------------------------------------------------------------------------
@@ -34,53 +37,90 @@ Identitas utama:
 
 ``` yaml
 brand:
-  primary: "#00d992"
-  primary-soft: "#2fd6a1"
-  primary-deep: "#10b981"
+  primary: "#2fd6a1"        # dark: aksi / aksen
+  primary-soft: "#6fe4c0"   # hover
+  primary-deep: "#17b184"   # active / pressed
+  on-primary: "#06130e"
 
 semantic:
-  danger: "#ff5c5c"
+  danger: "#ef6b6b"
+  danger-soft: "#ff8a8a"
+
+radii:
+  card: 14px
+  control: 8px
+
+motion:
+  ease: cubic-bezier(0.22, 1, 0.36, 1)
+  duration: 220ms
 
 themes:
 
   dark:
-    background: "#101010"
-    surface: "#1a1a1a"
-    text-primary: "#f2f2f2"
-    text-secondary: "#bdbdbd"
-    border: "#3d3a39"
+    background: "#0a0f0d"
+    surface: "#101614"
+    surface-hover: "#16201c"
+    text-primary: "#dbe6e2"
+    text-strong: "#f2f7f5"
+    text-secondary: "#9aa9a4"
+    text-muted: "#66756f"
+    border: "#202b27"
+    border-strong: "#2d3b36"
 
   light:
-    background: "#f8fafc"
+    background: "#f2f4f1"
     surface: "#ffffff"
-    text-primary: "#111827"
-    text-secondary: "#475569"
-    border: "#d1d5db"
+    surface-hover: "#f4f7f4"
+    text-primary: "#24322c"
+    text-strong: "#0f1714"
+    text-secondary: "#4a5a53"
+    text-muted: "#6b7a74"
+    border: "#dde4df"
+    border-strong: "#c4cec8"
+    primary: "#0a7f5e"      # aksen lebih gelap untuk kontras di light
+    primary-soft: "#0fa171"
+    primary-deep: "#076148"
+    on-primary: "#f2fbf8"
+    danger: "#d64545"
 ```
+
+Semua gray diberi tint hijau dingin yang konsisten; dilarang mencampur
+gray hangat.
 
 ------------------------------------------------------------------------
 
 ## Typography
 
-Primary:
+Display (serif):
 
--   Inter
--   system-ui fallback
+-   Fraunces — italic 500 untuk kutipan, 500 untuk headline
+-   Iowan Old Style / Georgia fallback
+
+UI (sans):
+
+-   Space Grotesk
+-   Segoe UI / system-ui fallback
 
 Mono:
 
--   SF Mono
 -   JetBrains Mono
--   Consolas
+-   SF Mono / Consolas fallback
 
-  Token        Size   Weight   Usage
-  ------------ ------ -------- ------------
-  display-xl   48px   400      Hero title
-  display-lg   32px   400      Section
-  quote-text   24px   500      Quote
-  body-md      16px   400      Content
-  body-sm      14px   400      History
-  code         13px   400      Timestamp
+  Token        Size               Weight   Usage
+  ------------ ------------------ -------- ------------
+  display-xl   34–52px (clamp)    500      Hero title, serif
+  display-lg   24–30px (clamp)    500      Section title, serif
+  quote-text   28–40px (clamp)    500      Quote, serif italic
+  body-md      16px               400      Content
+  body-sm      14px               400      History / hints
+  code         11–13px            400      Timestamp / eyebrow
+
+Aturan:
+
+-   `text-wrap: balance` pada headline, `text-wrap: pretty` pada kutipan
+-   `font-variant-numeric: tabular-nums` pada angka & timestamp
+-   Uppercase mono hanya untuk eyebrow/meta kecil (identity), letter-spacing
+    0.08–0.12em
 
 ------------------------------------------------------------------------
 
@@ -92,10 +132,11 @@ Main card untuk quote aktif.
 
 Rules:
 
--   Large readable text
--   Author highlight
--   Hairline border
--   Theme adaptive surface
+-   Serif italic, ukuran besar, giroskop besar (" ") sebagai dekorasi
+-   Author: mono uppercase dengan bullet glow hijau
+-   Hairline border + radial glow di sudut atas kanan
+-   Skeleton shimmer saat loading (bukan spinner)
+-   `aria-busy` + `aria-live="polite"`, error memakai `role="alert"`
 
 ------------------------------------------------------------------------
 
@@ -106,7 +147,8 @@ Untuk:
 -   Generate quote
 -   Download quote
 
-Menggunakan brand primary green.
+Menggunakan brand primary green, shadow tinted hijau, hover translateY(-1px),
+pressed scale(0.98).
 
 ------------------------------------------------------------------------
 
@@ -125,12 +167,29 @@ Gunakan outline/ghost style agar tidak mengambil fokus.
 
 Berisi:
 
--   Quote
+-   Quote (serif italic, sejajar dengan hero)
 -   Author
--   Timestamp
+-   Timestamp (tabular-nums)
 -   Delete action
+-   Badge count di header
 
-Mengikuti gaya developer log/table.
+Mengikuti gaya developer log/table dengan hover surface tint.
+
+------------------------------------------------------------------------
+
+### Toggle Pill
+
+Segmented control untuk format export (TXT / PDF). Item aktif memakai
+primary + shadow glow.
+
+------------------------------------------------------------------------
+
+## Surfaces & Effects
+
+-   Ambien: radial gradient glow hijau di pojok layar (`.app-shell::before`)
+-   Grain: noise overlay fixed opacity 5% (`.app-shell::after`)
+-   Nav: sticky + `backdrop-filter: blur(14px)`, glass dengan hairline border
+-   Shadow selalu ditintai hue hijau, bukan hitam murni
 
 ------------------------------------------------------------------------
 
@@ -167,6 +226,9 @@ src/
 ├── components/
 │   ├── ui/
 │   ├── layout/
+│   │   ├── NavBar.jsx
+│   │   ├── MainLayout.jsx
+│   │   └── Footer.jsx
 │   └── features/
 │       ├── quote/
 │       └── history/
@@ -197,6 +259,7 @@ Mobile:
 
 -   Single column
 -   Full width card
+-   Action bar & history item stacked vertikal
 
 Tablet:
 
@@ -204,7 +267,7 @@ Tablet:
 
 Desktop:
 
--   Center container
+-   Center container (max 1080px)
 -   Documentation style layout
 
 ------------------------------------------------------------------------
@@ -212,9 +275,11 @@ Desktop:
 ## Accessibility
 
 -   Maintain contrast
--   Keyboard support
--   Focus state
+-   Keyboard support, visible focus ring
+-   Skip to content link (`.skip-link`)
 -   Semantic HTML
+-   `prefers-reduced-motion` menonaktifkan animasi
+-   Status live region untuk loading, alert untuk error
 
 ------------------------------------------------------------------------
 
@@ -223,9 +288,11 @@ Desktop:
 -   Keep spacing consistent
 -   Maintain clean developer aesthetic
 -   Use green only for primary actions
+-   Tint semua surface & border ke arah hijau dingin
 
 ## Don't
 
--   Avoid heavy shadow
+-   Avoid heavy shadow (tinted shadow saja)
 -   Avoid random colors
 -   Avoid inconsistent typography
+-   Avoid purple/blue gradients
